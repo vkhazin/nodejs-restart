@@ -1,7 +1,8 @@
 # Rogers Authentication/Authorization Service #
 
 # Overview #
-Integrate shomi with rogers direct api for authentication and authorization by-passing Adobe Pass & Clearleap
+Integrate shomi with rogers direct api for authentication and authorization purposes.
+By-pass Adobe Pass & Clearleap or any of their equivalents.
 
 # End-Points #
 
