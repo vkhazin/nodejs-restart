@@ -59,6 +59,7 @@ Status: 400 - Bad Request
 {
 	"message": "Missing username and/or password"
 }
+```
 
 ## Authorization ##
 
