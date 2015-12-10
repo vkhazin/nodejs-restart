@@ -1,0 +1,7 @@
+{
+	"authentication": {
+		"url": "https://mtsdwspssgw.rogers.com",
+		"path": "/rogersAuth/entication",
+		"timeoutMs": 300
+	}	
+}

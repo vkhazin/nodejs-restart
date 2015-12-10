@@ -4,7 +4,7 @@
   "description": "Shomi-Rogers Direct Integration",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,14 @@
   ],
   "author": "Vlad Khazin <vladimir.khazin@icssolutions.ca>",
   "license": "ISC",
-  "homepage": "https://github.com/shomi-com/RogersAuthCZService.git"
+  "homepage": "https://github.com/shomi-com/RogersAuthCZService.git",
+  "dependencies": {
+    "bluebird": "^3.0.6",
+    "config": "^1.17.1",
+    "resilient": "^0.3.2",
+    "restify": "^4.0.3",
+    "underscore": "^1.8.3",
+    "uuid": "^2.0.1",
+    "xml2json": "^0.9.0"
+  }
 }
