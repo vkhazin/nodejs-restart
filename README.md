@@ -3,16 +3,22 @@
 # Overview #
 Fast tack creating end-point using restify
 
+# Setup #
+Install node.js
+Clone project from terminal window: git clone https://github.com/vkhazin/restify-seed.git
+Install dependencies from terminal window: npm install
+Run from command window: node app.js
+
 # End-Points #
 
 ## Echo ##
 
 ### Request ###
 
-GET: /  
-GET: /echo  
-GET: /v1/  
-GET: /v1/echo  
+GET: http://localhost:3000/  
+GET: http://localhost:3000/echo  
+GET: http://localhost:3000/v1/  
+GET: http://localhost:3000/v1/echo  
 
 ### Response ###
 
@@ -31,7 +37,7 @@ Status: 200
 
 ### Request ###
 
-GET: /v1/helloWorld/vlad
+GET: http://localhost:3000/v1/helloWorld/vlad
 
 ### Response ###
 
