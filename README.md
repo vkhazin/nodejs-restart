@@ -1,13 +1,14 @@
 # Seed Project for Restful Service using Restify #
 
 # Overview #
-Fast tack creating end-point using restify
+Fast tack creating end-point using restify from the linkedin article:  
+https://www.linkedin.com/pulse/from-0-over-500-reqsec-half-day-vlad-khazin
 
 # Setup #
-Install node.js
-Clone project from terminal window: git clone https://github.com/vkhazin/restify-seed.git
-Install dependencies from terminal window: npm install
-Run from command window: node app.js
+* Install node.js
+* Clone project from terminal window: git clone https://github.com/vkhazin/restify-seed.git
+* Install dependencies from terminal window: npm install
+* Run from command window: node app.js
 
 # End-Points #
 
