@@ -1,4 +1,4 @@
-# Restify Seed Restful Service #
+# Seed Project for Restful Service using Restify #
 
 # Overview #
 Fast tack creating end-point using restify
