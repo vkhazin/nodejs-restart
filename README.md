@@ -9,10 +9,10 @@ Fast tack creating end-point using restify
 
 ### Request ###
 
-GET: /
-GET: /echo
-GET: /v1/
-GET: /v1/echo
+GET: /  
+GET: /echo  
+GET: /v1/  
+GET: /v1/echo  
 
 ### Response ###
 
@@ -25,6 +25,7 @@ Status: 200
     author: "Vlad Khazin <vladimir.khazin@icssolutions.ca>",
     node: "v4.2.2"
 }
+```
 
 ## helloWorld ##
 
