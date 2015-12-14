@@ -5,9 +5,7 @@ var restify 	    = require('restify');
 var config 		    = require('config');
 var promise         = require('bluebird');
 var logger          = require('./logger').create(logger);
-var utils           = require('./utils').create(logger);
-var authC           = require('./authC').create(config, logger, utils);
-var authZ           = require('./authZ').create(config, logger, utils);
+var someModule      = require('./someModule').create(config, logger);
 /*********************************************************************************/
 
 /**********************************************************************************
@@ -60,67 +58,30 @@ function echo(req, res, next) {
     next();
 }    
 
-//AuthC
-server.post({path: routePrefix + '/authc', flags: 'i'}, authenticate);
+//Demo end-point
+server.get({path: routePrefix + '/helloWorld', flags: 'i'}, helloWorld);
+server.get({path: routePrefix + '/helloWorld/:name', flags: 'i'}, helloWorld);
 
-function authenticate(req, res, next) {
-    var xRequestId = utils.getXRequestId(req);
-    var xDeviceType = utils.getXDeviceType(req);
+function helloWorld(req, res, next) {
 
-    var response;
-
-    authC.authenticate(parseRequest(req))
-        .then(function(result) {     
-            response = result
-            return promise.resolve(authZ.authorize(result.id));        
-        })
+    someModule.helloWorld(req.params.name)
         .then(function(result) {
-            response.isAuthorized = true;
-            res.send(response);
-            logger.info({
-                xRequestId: xRequestId,
-                xDeviceType: xDeviceType,
-                response: response
-            });    
+            //status: 200, body: json
+            res.send(result);     
         })
         .catch(function(err) {           
-            var msg = 'x-request-id: ' + xRequestId + ', x-device-type: ' + xDeviceType;
-            msg += '\n err code: ' + err.code + ' err msg: ' + err.msg;
-            logger.error(msg);
-
-            if (err.code == 401) {
-                res.send(new restify.errors.UnauthorizedError(err.msg));
-            } else if (err.code == 403) {
-                res.send(new restify.errors.ForbiddenError(err.msg));
-            } else if (err.code == 400) {
-                res.send(new restify.errors.BadRequestError(err.msg));
-            } else {
-                res.send(new restify.errors.InternalServerError(err.msg));
-            }        
+            //log raw error
+            logger.error(err);
+            //JSON.stringify unfortunately may fail when error has circular references
+            res.send(new restify.errors.InternalServerError(JSON.stringify(err)));
         })
         .done(function(){
+            //processing has finished
             next();
         });
-}; 
-
-//AuthZ
-//server.get({path: routePrefix + '/authz/:id', flags: 'i'}, authorize); 
-
+};
 /*********************************************************************************/
 
-/**********************************************************************************
-Functions
-**********************************************************************************/
-function parseRequest(req) {
-    var output = {};
-    if (typeof req.body == 'string') {
-        output = JSON.parse(req.body);
-    } else {
-        output = req.body || {};
-    }
-    return output;
-}
-/*********************************************************************************/
 
 /**********************************************************************************
 Start the server

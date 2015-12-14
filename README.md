@@ -1,84 +1,42 @@
-# Rogers Authentication/Authorization Service #
+# Restify Seed Restful Service #
 
 # Overview #
-Integrate shomi with rogers direct api for authentication and authorization purposes.
-By-pass Adobe Pass & Clearleap or any of their equivalents.
+Fast tack creating end-point using restify
 
 # End-Points #
 
-## AuthCZ ##
+## Echo ##
 
 ### Request ###
 
-POST: /authc  
-```
-{
-	"username": "vlad.khazin@shomi.com",
-	"password": "sHomi2016"
-}
-```
+GET: /
+GET: /echo
+GET: /v1/
+GET: /v1/echo
 
-### Response-Success ###
+### Response ###
 
 Status: 200  
 ```
 {
-	"id": "60b9c0d8-a8d9-4d11-a124-23ef1c965d50",
-	"email": "vlad.khazin@shomi.com",
-    "isAuthenticated": true,
-    "isAuthorized": true
+    name: "restify-seed",
+    version: "1.0.0",
+    description: "from 0 to 500 req/sec",
+    author: "Vlad Khazin <vladimir.khazin@icssolutions.ca>",
+    node: "v4.2.2"
 }
-```
 
-### Response-Failure-AuthC ###
-
-Status: 401 - Unauthorized
-```
-{
-    "isAuthenticated": false,
-}
-```
-
-### Response-Failure-AuthZ ###
-
-Status: 403 - Forbidden
-```
-{
-	"id": "60b9c0d8-a8d9-4d11-a124-23ef1c965d50",
-    "email": "vlad.khazin@shomi.com",
-    "isAuthenticated": true,
-    "isAuthorized": false
-}
-```
-
-
-### Response-Failure-Bad Request ###
-
-Status: 400 - Bad Request
-```
-{
-	"message": "Missing username and/or password"
-}
-```
-
-## Authorization ##
+## helloWorld ##
 
 ### Request ###
 
-GET: /authz/:id  
+GET: /v1/helloWorld/vlad
 
-### Response-Success ###
+### Response ###
 
 Status: 200  
 ```
 {
-   "isAuthorized": true
-}
-```
-
-Status: 403 - Forbidden
-```
-{
-    "isAuthorized": false
+    msg: "hello vlad!"
 }
 ```
