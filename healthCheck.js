@@ -15,11 +15,11 @@ exports.create =  function (cnf, lgr) {
                 healthCheckCounter++;
                 if (healthCheckCounter <= healthCheckMaxCount) {
                     return promise.resolve({
-                        msg: `Still alive! Health Check count: ${healthCheckCounter} out of ${healthCheckMaxCount}`
+                        msg: 'Still alive! Health Check count: ' + healthCheckCounter + ' out of ' + healthCheckMaxCount
                     });
                 } else {
                     return promise.reject({
-                        msg: `Health check count of ${healthCheckCounter} exceeds max retries of ${healthCheckMaxCount}, restart is required`
+                        msg: 'Health check count of ' + healthCheckCounter + ' exceeds max retries of ' + healthCheckMaxCount + ', restart is required'
                     })
                 }
             }
