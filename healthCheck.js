@@ -11,7 +11,7 @@ exports.create =  function (cnf, lgr) {
 
 	return (function () {
 	    return {
-            ping: () => {
+            ping: function() {
                 healthCheckCounter++;
                 if (healthCheckCounter <= healthCheckMaxCount) {
                     return promise.resolve({
