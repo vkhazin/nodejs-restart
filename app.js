@@ -1,51 +1,30 @@
 /*********************************************************************************
 Dependencies
 **********************************************************************************/
-var restify 	    = require('restify');
-var config 		    = require('config');
-var promise         = require('bluebird');
-var logger          = require('./logger').create(logger);
-var someModule      = require('./someModule').create(config, logger);
+const express           = require('express');
+const app               = express();
+const router            = express.Router();
+const compression       = require('compression');
+//const bodyParser        = require('body-parser'); //not in use yet
+const config 		    = require('config');
+const promise           = require('bluebird');
+const logger            = require('./logger').create();
+const healthCheckModule = require('./healthCheck').create(config, logger);
 /*********************************************************************************/
 
 /**********************************************************************************
 Configuration
 **********************************************************************************/
-var appInfo 		= require('./package.json');
-var port 			= process.env.PORT || 3000;
-var server 			= restify.createServer();
+const appInfo 		    = require('./package.json');
+const port 			    = process.env.PORT || 3000;
 /*********************************************************************************/
-
-/**********************************************************************************
-Constants
-**********************************************************************************/
-var routePrefix                     = '/v1';
-/*********************************************************************************/
-
-/**********************************************************************************
-Setup
-**********************************************************************************/
-server.use(restify.queryParser());
-server.use(restify.bodyParser());
-server.use(restify.CORS());
-server.opts(/.*/, function (req,res,next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", req.header("Access-Control-Request-Method"));
-    res.header("Access-Control-Allow-Headers", req.header("Access-Control-Request-Headers"));
-    res.send(200);
-    return next();
-});
-server.use(restify.gzipResponse());
 
 /**********************************************************************************
 End-points
 **********************************************************************************/
 //Echo
-server.get({path: routePrefix + '/echo', flags: 'i'}, echo);
-server.get({path: routePrefix, flags: 'i'}, echo);
-server.get({path: '/', flags: 'i'}, echo);
-server.get({path: '/echo', flags: 'i'}, echo);
-
+router.get('/', echo);
+router.get('/echo', echo);
 function echo(req, res, next) {
     var info = {
         name: appInfo.name,
@@ -56,15 +35,13 @@ function echo(req, res, next) {
     };
     res.send(info);
     next();
-}    
+}
 
-//Demo end-point
-server.get({path: routePrefix + '/helloWorld', flags: 'i'}, helloWorld);
-server.get({path: routePrefix + '/helloWorld/:name', flags: 'i'}, helloWorld);
+//Health-check end-point
+router.get('/healthcheck', healthCheck);
+function healthCheck(req, res, next) {
 
-function helloWorld(req, res, next) {
-
-    someModule.helloWorld(req.params.name)
+    healthCheckModule.ping()
         .then(function(result) {
             //status: 200, body: json
             res.send(result);     
@@ -73,7 +50,7 @@ function helloWorld(req, res, next) {
             //log raw error
             logger.error(err);
             //JSON.stringify unfortunately may fail when error has circular references
-            res.send(new restify.errors.InternalServerError(JSON.stringify(err)));
+            res.status(500).send({ error: err });
         })
         .done(function(){
             //processing has finished
@@ -82,14 +59,16 @@ function helloWorld(req, res, next) {
 };
 /*********************************************************************************/
 
-
 /**********************************************************************************
-Start the server
+Set up and Start the server
 **********************************************************************************/
-server.listen(port, function() {
-	var msg = 'Starting service using port \'{port}\' and environment \'{environment}\''
-				.replace('{port}', port)
-				.replace('{environment}', process.env.NODE_ENV)
-	logger.log(msg);
-});
+app
+    .use(compression())
+    .use('/', router)
+    .listen(port);
+
+var msg = 'Starting service using port \'{port}\' and environment \'{environment}\''
+			.replace('{port}', port)
+			.replace('{environment}', process.env.NODE_ENV)
+logger.log(msg);
 /********************************************************************************/
